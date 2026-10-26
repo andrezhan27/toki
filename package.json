@@ -9,7 +9,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@andrezhan27/intelis-restaurant-ui": "^0.1.0",
     "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.468.0",

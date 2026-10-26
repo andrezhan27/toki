@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@andrezhan27/intelis-restaurant-ui"],
   async redirects() {
     return [
       {
@@ -10,6 +9,9 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
     ];
+  },
+  turbopack: {
+    root: process.cwd(),
   },
   images: {
     formats: ["image/avif", "image/webp"],
