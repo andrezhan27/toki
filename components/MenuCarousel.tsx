@@ -2,7 +2,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, type KeyboardEvent, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { foodPhotos } from "@/lib/restaurant-info";
 import { useLanguage } from "./LanguageProvider";
 import Reveal from "./Reveal";
@@ -11,6 +11,7 @@ import SectionHeading from "./SectionHeading";
 export default function MenuCarousel() {
   const { language, t } = useLanguage();
   const track = useRef<HTMLDivElement>(null);
+  const [loadImages, setLoadImages] = useState(false);
   const offset = useRef(0);
   const loopWidth = useRef(0);
   const drag = useRef<{ id: number; x: number } | null>(null);
@@ -33,27 +34,53 @@ export default function MenuCarousel() {
     observer.observe(group);
     measure();
 
+    // Warm the strip shortly before it is visible, without fetching every dish
+    // while the visitor is still looking at the hero.
+    const slider = track.current!.parentElement!;
+    const loadingObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setLoadImages(true);
+        loadingObserver.disconnect();
+      }
+    }, { rootMargin: "600px 0px" });
+    loadingObserver.observe(slider);
+
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let reducedMotion = motionPreference.matches;
-    const onMotionChange = () => { reducedMotion = motionPreference.matches; };
-    motionPreference.addEventListener("change", onMotionChange);
+    let inView = false;
     let frame = 0;
     let previousTime: number | null = null;
     const advance = (time: number) => {
       const elapsed = previousTime === null ? 0 : Math.min(time - previousTime, 64);
       previousTime = time;
-      if (!drag.current && !reducedMotion && !document.hidden) {
-        // Keep the same gentle pace as the number of featured dishes changes.
+      if (!drag.current) {
         offset.current += (loopWidth.current / (foodPhotos.length * 12667)) * elapsed;
         paint();
       }
       frame = requestAnimationFrame(advance);
     };
-    frame = requestAnimationFrame(advance);
+    const syncAnimation = () => {
+      if (inView && !document.hidden && !motionPreference.matches) {
+        if (!frame) frame = requestAnimationFrame(advance);
+      } else {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        previousTime = null;
+      }
+    };
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      syncAnimation();
+    });
+    visibilityObserver.observe(slider);
+    document.addEventListener("visibilitychange", syncAnimation);
+    motionPreference.addEventListener("change", syncAnimation);
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
-      motionPreference.removeEventListener("change", onMotionChange);
+      loadingObserver.disconnect();
+      visibilityObserver.disconnect();
+      document.removeEventListener("visibilitychange", syncAnimation);
+      motionPreference.removeEventListener("change", syncAnimation);
     };
   }, [paint]);
 
@@ -124,8 +151,9 @@ export default function MenuCarousel() {
                         src={photo.src}
                         alt={copy === 1 ? "" : language === "pt" ? photo.altPt : photo.altEn}
                         fill
+                        loading={loadImages ? "eager" : "lazy"}
                         draggable={false}
-                        sizes="(max-width: 600px) 80vw, (max-width: 899px) 45vw, 440px"
+                        sizes="(max-width: 600px) 80vw, (max-width: 838px) 260px, (max-width: 1419px) 31vw, 440px"
                       />
                     </div>
                     <div className="dish-overlay">
@@ -138,7 +166,6 @@ export default function MenuCarousel() {
             ))}
           </div>
         </div>
-        <p className="menu-note">{t.menuNote}</p>
       </div>
     </section>
   );

@@ -7,11 +7,12 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
-    "test:seo": "node --test tests/seo-config.test.mjs"
+    "test:seo": "node --test tests/seo-config.test.mjs",
+    "images:prepare": "node scripts/prepare-images.mjs",
+    "test:images": "npm run images:prepare && node --test tests/image-assets.test.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
-    "framer-motion": "^12.23.12",
     "lucide-react": "^0.468.0",
     "next": "^16.0.0",
     "react": "^19.2.0",
@@ -25,6 +26,7 @@
     "eslint": "^9.17.0",
     "eslint-config-next": "^16.0.0",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "sharp": "^0.35.3"
   }
 }

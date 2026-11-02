@@ -1,3 +1,4 @@
+import ReviewsSection from "@/components/ReviewsSection";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import InfoSection from "@/components/InfoSection";
@@ -22,6 +23,7 @@ export default function Home() {
         <MenuCarousel />
         <PricingSection />
         <InfoSection />
+        <ReviewsSection />
       </main>
       <Footer />
     </>

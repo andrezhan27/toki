@@ -1,59 +1,68 @@
 "use client";
 
+import Image from "next/image";
 import { useLanguage } from "./LanguageProvider";
 import SectionHeading from "./SectionHeading";
 
-// Await owner-confirmed TOKI prices; do not publish reference restaurant rates.
-const priceGroups: { pt: string; en: string; rates: (number | null)[] }[] = [
-  { pt: "Segunda a sexta", en: "Monday to Friday", rates: [null, null, null] },
-  { pt: "Fins de semana e feriados", en: "Weekends and public holidays", rates: [null, null, null] },
+const priceGroups = [
+  { pt: "Almoço", en: "Lunch", rates: [18.9, 19.9] },
+  { pt: "Jantar", en: "Dinner", rates: [21.9, 22.9] },
 ];
 
 export default function PricingSection() {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const isPt = language === "pt";
-  const meals = [t.lunch, t.dinner, isPt ? "Crianças" : "Children"];
+  const days = isPt
+    ? ["Segunda a quinta", "Sexta a domingo e feriados"]
+    : ["Monday to Thursday", "Friday to Sunday and public holidays"];
   const currency = new Intl.NumberFormat(isPt ? "pt-PT" : "en-IE", {
     style: "currency", currency: "EUR",
   });
 
   return (
     <section className="pricing-section section-shell" id="pricing">
-      <SectionHeading number="03" title={isPt ? "Rodízio de sushi" : "All-you-can-eat sushi"} />
-      <div className="pricing-layout">
+      <div className="pricing-heading">
+        <SectionHeading number="03" title={isPt ? "Rodízio de sushi" : "All-you-can-eat sushi"} />
         <div className="pricing-intro">
           <p className="section-copy">
             {isPt
-              ? "No TOKI, o sushi é servido à discrição, ao almoço e ao jantar. Conheça o nosso rodízio em Leça da Palmeira e consulte os preços e condições com a nossa equipa."
-              : "Enjoy all-you-can-eat sushi at TOKI for lunch or dinner. Discover our restaurant in Leça da Palmeira and ask our team about prices and dining conditions."}
+              ? "No TOKI, o sushi é servido à discrição, ao almoço e ao jantar. Conheça os preços do nosso rodízio em Leça da Palmeira e venha desfrutar dos seus favoritos."
+              : "Enjoy all-you-can-eat sushi at TOKI for lunch or dinner. Explore our all-you-can-eat prices in Leça da Palmeira and join us for your favourites."}
           </p>
         </div>
-        <div className="price-sheet">
-          <header className="price-sheet-header">
-            <h3>TOKI SUSHI</h3>
-            <p>{isPt ? "Almoço & jantar" : "Lunch & dinner"}</p>
-          </header>
+      </div>
+      <div className="price-sheet">
+        <header className="price-sheet-header">
+          <Image
+            className="price-sheet-logo"
+            src="/images/toki/logo.webp"
+            alt="TOKI Sushi"
+            width={96}
+            height={96}
+          />
+        </header>
+        <div className="price-groups">
           {priceGroups.map((group) => (
             <section className="price-group" key={group.en}>
               <h3>{isPt ? group.pt : group.en}</h3>
               <dl>
                 {group.rates.map((price, index) => (
-                  <div className="price-row" key={meals[index]}>
-                    <dt>{meals[index]}</dt>
-                    <dd className={price === null ? "" : "has-price"}>
-                      {price === null ? (isPt ? "Sob consulta" : "Please enquire") : currency.format(price)}
+                  <div className="price-row" key={days[index]}>
+                    <dt>{days[index]}</dt>
+                    <dd className="has-price">
+                      {currency.format(price)}
                     </dd>
                   </div>
                 ))}
               </dl>
             </section>
           ))}
-          <p className="pricing-note">
-            {isPt
-              ? "Para mais informações e condições para crianças, fale com a nossa equipa."
-              : "For more information and children's dining conditions, please speak to our team."}
-          </p>
         </div>
+        <p className="pricing-note">
+          {isPt
+            ? "Crianças até 120 cm: 50% de desconto."
+            : "Children up to 120 cm tall: 50% off."}
+        </p>
       </div>
     </section>
   );

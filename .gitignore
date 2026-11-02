@@ -24,3 +24,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated responsive images (prepared before dev/build)
+/public/optimized/
+/lib/image-manifest.json

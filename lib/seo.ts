@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getSeoConfig } from "./seo-config";
 
 export const { siteUrl, isIndexable } = getSeoConfig();
-export const socialImage = "/images/toki/toki-sushi-leca-da-palmeira-social.jpg";
+export const socialImage = "/images/toki/social-sharing.webp";
 
 export function absoluteUrl(path: string) {
   return siteUrl ? new URL(path, siteUrl).toString() : undefined;

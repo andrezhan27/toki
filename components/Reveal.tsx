@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 export default function Reveal({
   children,
@@ -13,16 +13,27 @@ export default function Reveal({
   delay?: number;
   y?: number;
 }) {
-  const reduced = useReducedMotion();
+  const element = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const target = element.current;
+    if (!target) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        target.classList.add("reveal--visible");
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
+    <div
+      ref={element}
       className={`reveal ${className ?? ""}`}
-      initial={reduced ? false : { opacity: 0, y }}
-      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      style={{ "--reveal-delay": `${delay}s`, "--reveal-y": `${y}px` } as CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

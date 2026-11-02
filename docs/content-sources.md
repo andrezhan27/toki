@@ -13,7 +13,7 @@ The previous restaurant’s prices, menus, social profiles, legal-document looku
 
 ## Logo
 
-`public/images/toki/logo-original.webp` is the user-provided logo. `logo.webp` is a trimmed, resized derivative of the same asset. App icons are resized derivatives.
+`public/images/toki/logo.webp` is a trimmed, resized derivative of the user-provided logo. The unused full-size duplicate has been removed from the public assets. App icons are resized derivatives.
 
 ## Photography
 
@@ -27,7 +27,7 @@ The hero and space gallery use five user-supplied WebP images added on 26 Octobe
 | `public/images/toki/lanternas-japonesas-toki.webp` | Image 4 — lantern wall |
 | `public/images/toki/fachada-toki-sushi-leca-da-palmeira.webp` | Image 5 — facade at golden hour |
 
-The 1200 × 630 social-sharing JPEG (`toki-sushi-leca-da-palmeira-social.jpg`) is a crop of the same supplied dining-room image. The owner confirmed `tokisushi.pt` as the final domain. Official social profile URLs remain pending; no unrelated TOKI profiles are used. See `seo-launch.md` for launch configuration.
+The 1200 × 630 social-sharing WebP (`social-sharing.webp`) is a crop of the same supplied dining-room image. The owner confirmed `tokisushi.pt` as the final domain. Official social profile URLs remain pending; no unrelated TOKI profiles are used. See `seo-launch.md` for launch configuration.
 
 The remaining photos below were sourced from Google Maps:
 

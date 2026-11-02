@@ -22,6 +22,7 @@ export default function FooterContent() {
           <Link href="/menu">{t.navMenu}</Link>
           <Link href="/#pricing">{t.pricing}</Link>
           <Link href="/#info">{t.navInfo}</Link>
+          <Link href="/#reviews">{t.navReviews}</Link>
           <Link href="/reservation">{t.reservations}</Link>
         </div>
         <div className="footer-column">

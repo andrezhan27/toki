@@ -1,25 +1,28 @@
 "use client";
 import { ArrowDown } from "lucide-react";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
 
 export default function Hero() {
   const { language, t } = useLanguage();
+  const common = {
+    alt: language === "pt"
+      ? "Interior do TOKI Sushi em Leça da Palmeira"
+      : "TOKI Sushi restaurant interior in Leça da Palmeira",
+    sizes: "100vw",
+    loading: "eager" as const,
+    fetchPriority: "high" as const,
+  };
+  const { props: desktop } = getImageProps({ ...common, src: "/images/toki/sala-toki-sushi-leca-da-palmeira.webp", width: 1448, height: 1086 });
+  const { props: mobile } = getImageProps({ ...common, src: "/images/toki/interior-hanging-fish.webp", width: 1086, height: 1448 });
   return (
     <section className="hero" id="top" aria-label="TOKI Sushi">
-      <Image
-        className="hero-image"
-        src="/images/toki/sala-toki-sushi-leca-da-palmeira.webp"
-        alt={
-          language === "pt"
-            ? "Sala do TOKI Sushi em Leça da Palmeira, com iluminação circular e mesas acolhedoras"
-            : "TOKI Sushi dining room with circular lighting and welcoming tables"
-        }
-        fill
-        preload
-        sizes="100vw"
-      />
+      <picture className="hero-picture">
+        <source media="(max-width: 767px)" srcSet={mobile.srcSet} sizes="100vw" />
+        {/* Art direction: the browser downloads only the matching image. */}
+        <img {...desktop} alt={common.alt} className="hero-image" />
+      </picture>
       <div className="hero-overlay" />
       <div className="hero-content section-shell">
         <p className="eyebrow hero-eyebrow">{t.heroEyebrow}</p>

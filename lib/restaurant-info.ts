@@ -7,8 +7,9 @@ export const restaurantInfo = {
   phone: "913 421 449",
   phoneHref: "tel:+351913421449",
   mapsUrl: "https://maps.app.goo.gl/fkFShsJcrUiguTAF9",
+  reservationWidgetUrl: "https://reserve.intelis.pt/toki",
   mapEmbedUrl:
-    "https://maps.google.com/maps?q=TOKI%20Sushi%2C%20Rua%20Veloso%20Salgado%20545%2C%20Le%C3%A7a%20da%20Palmeira&z=16&output=embed",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001.785052178968!2d-8.69449602390496!3d41.20465957132372!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2469c4f0c23a5f%3A0x57f0a6c518a07ab9!2sTOKI%20Sushi!5e0!3m2!1sen!2spt!4v1793627341737!5m2!1sen!2spt",
   hours: { lunch: "12:00–15:00", dinner: "19:00–23:00" },
   // Add only owner-confirmed TOKI profiles; these also populate JSON-LD sameAs.
   socialLinks: [] as { label: string; url: string }[],

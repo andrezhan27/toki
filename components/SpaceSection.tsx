@@ -21,8 +21,8 @@ export default function SpaceSection() {
               alt={language === "pt" ? photo.pt : photo.en}
               fill
               sizes={index === 0 || index === 3
-                ? "(max-width: 600px) 90vw, 58vw"
-                : "(max-width: 600px) 44vw, 38vw"}
+                ? "(max-width: 600px) calc(100vw - 40px), (max-width: 1100px) calc((100vw - 76px) / 2), (max-width: 1420px) calc((100vw - 116px) / 2), 652px"
+                : "(max-width: 600px) calc((100vw - 48px) / 2), (max-width: 1100px) calc((100vw - 76px) / 2), (max-width: 1420px) calc((100vw - 116px) / 2), 652px"}
             />
           </Reveal>
         ))}

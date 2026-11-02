@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +13,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
   const pathname = usePathname();
-  const reduced = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,7 +26,7 @@ export default function Navbar() {
       return;
     }
 
-    const sections = ["top", "space", "menu", "info"];
+    const sections = ["top", "space", "menu", "info", "reviews"];
     const onScroll = () => {
       const marker = window.scrollY + window.innerHeight * 0.38;
       let current = "top";
@@ -67,9 +65,11 @@ export default function Navbar() {
     [pathname === "/" ? "#space" : "/#space", t.navSpace, "space"],
     ["/menu", t.navMenu, pathname === "/menu" ? "menu-page" : "menu"],
     [pathname === "/" ? "#info" : "/#info", t.navInfo, "info"],
+    [pathname === "/" ? "#reviews" : "/#reviews", t.navReviews, "reviews"],
   ];
 
   return (
+    <>
     <header className={`navbar ${scrolled || open ? "navbar--solid" : ""}`}>
       <Link
         className="nav-brand"
@@ -158,18 +158,14 @@ export default function Navbar() {
         </button>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.nav
+          <nav
             id="mobile-navigation"
-            className="mobile-menu"
+            className={`mobile-menu ${open ? "mobile-menu--open" : ""}`}
+            aria-hidden={!open}
+            inert={!open}
             aria-label={
               language === "pt" ? "Navegação móvel" : "Mobile navigation"
             }
-            initial={reduced ? false : { opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
           >
             {links.map(([href, label, section], index) => (
               <Link
@@ -192,9 +188,11 @@ export default function Navbar() {
             >
               {t.reserveTable}
             </Link>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+          </nav>
     </header>
+    {pathname !== "/reservation" && !open && (
+      <Link className="floating-reserve" href="/reservation">{t.reserveTable}</Link>
+    )}
+    </>
   );
 }

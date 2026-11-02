@@ -18,15 +18,11 @@ export default function InfoSection() {
         <div className="info-layout">
         <div className="info-photo">
           <Image
-            src="/images/toki/exterior.webp"
-            alt={language === "pt" ? "A entrada do TOKI Sushi em Leça da Palmeira" : "The entrance to TOKI Sushi in Leça da Palmeira"}
+            src="/images/toki/prateleiras-bar-toki.webp"
+            alt={language === "pt" ? "Lanternas e prateleiras do bar do TOKI Sushi" : "Lanterns and bar shelves at TOKI Sushi"}
             fill
             sizes="(max-width: 767px) 90vw, 50vw"
           />
-          <div className="info-photo-caption">
-            <span>TOKI Sushi</span>
-            <p>{t.infoAside}</p>
-          </div>
         </div>
         <Reveal className="info-content">
           <p className="section-copy info-intro">{t.infoBody}</p>
@@ -34,12 +30,13 @@ export default function InfoSection() {
             <MapPin size={21} strokeWidth={1.4} />
             <div>
               <h3>{t.address}</h3>
-              <address><a href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
-                {restaurantInfo.address}, {restaurantInfo.postalAddress}
-              </a></address>
-              <a className="directions-button" href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
-                {t.directions}<ArrowUpRight size={13} />
-              </a>
+              <address>
+                <a className="address-link" href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
+                  <span>{restaurantInfo.address}, {restaurantInfo.postalAddress}</span>
+                  <ArrowUpRight size={18} aria-hidden="true" />
+                  <span className="sr-only">{t.directions}</span>
+                </a>
+              </address>
             </div>
           </div>
           <div className="info-row">
@@ -47,7 +44,6 @@ export default function InfoSection() {
             <div>
               <h3>{language === "pt" ? "Horário" : "Opening hours"}</h3>
               <p>{t.hours} · {restaurantInfo.hours.lunch} · {restaurantInfo.hours.dinner}</p>
-              <small>{t.holidayNote}</small>
             </div>
           </div>
           <div className="info-row">
@@ -55,11 +51,21 @@ export default function InfoSection() {
             <div>
               <h3>{t.contact}</h3>
               <a className="phone-link" href={restaurantInfo.phoneHref}>+351 {restaurantInfo.phone}</a>
-              <p className="takeaway">{t.takeaway}</p>
             </div>
           </div>
           <Link className="button button--dark" href="/reservation">{t.reserveTable}</Link>
         </Reveal>
+        </div>
+        <div className="info-map">
+          <iframe
+            src={restaurantInfo.mapEmbedUrl}
+            title={language === "pt" ? "Localização do TOKI Sushi no Google Maps" : "TOKI Sushi location on Google Maps"}
+            width="600"
+            height="450"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
         </div>
       </div>
     </section>
