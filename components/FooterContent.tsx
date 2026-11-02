@@ -1,67 +1,73 @@
 "use client";
-
-import { Facebook, Instagram } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import logoText from "@/public/images/logo-text.png";
-import type { RestaurantLegalLinks } from "@/lib/restaurant-legal-links";
+import { restaurantInfo } from "@/lib/restaurant-info";
 import { useLanguage } from "./LanguageProvider";
-
-const complaintsBookUrl = "https://www.livroreclamacoes.pt/Inicio/";
-
-export default function FooterContent({ legalLinks }: { legalLinks: RestaurantLegalLinks }) {
+export default function FooterContent() {
   const { t } = useLanguage();
-
   return (
     <footer className="footer">
       <div className="footer-main section-shell">
-        <Link className="footer-logo" href="/" onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "auto" })} aria-label="Friendship Sushi — início">
-          <Image src={logoText} alt="Friendship Sushi" width={1536} height={1024} />
+        <Link className="footer-brand" href="/" aria-label="TOKI Sushi">
+          <Image src="/images/toki/logo.webp" width={100} height={100} alt="" />
+          <span className="brand-wordmark">
+            TOKI<small>SUSHI</small>
+          </span>
         </Link>
-
+        <p className="footer-message">{t.infoAside}</p>
         <div className="footer-column">
-          <p>{t.footerNav}</p>
-          <a href="#space">{t.navSpace}</a>
-          <a href="#menu">{t.navMenu}</a>
-          <a href="#info">{t.navInfo}</a>
+          <h3>{t.footerNav}</h3>
+          <Link href="/#space">{t.navSpace}</Link>
+          <Link href="/menu">{t.navMenu}</Link>
+          <Link href="/#pricing">{t.pricing}</Link>
+          <Link href="/#info">{t.navInfo}</Link>
           <Link href="/reservation">{t.reservations}</Link>
         </div>
-
         <div className="footer-column">
-          <p>{t.legal}</p>
-          {legalLinks.privacyPolicyUrl && (
-            <a href={legalLinks.privacyPolicyUrl} target="_blank" rel="noreferrer">
-              {t.privacy}
+          <h3>{t.legal}</h3>
+          <a href={restaurantInfo.phoneHref}>+351 {restaurantInfo.phone}</a>
+          <address>
+            <a href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
+              {restaurantInfo.address}<br />{restaurantInfo.postalAddress}
             </a>
+          </address>
+          <a href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
+            Google Maps <ArrowUpRight size={12} />
+          </a>
+          {restaurantInfo.socialLinks.map((profile) => (
+            <a key={profile.url} href={profile.url} target="_blank" rel="noreferrer">
+              {profile.label} <ArrowUpRight size={12} />
+            </a>
+          ))}
+          {restaurantInfo.privacyPolicyUrl && (
+            <a href={restaurantInfo.privacyPolicyUrl}>{t.privacy}</a>
           )}
-          {legalLinks.termsAndConditionsUrl && (
-            <a href={legalLinks.termsAndConditionsUrl} target="_blank" rel="noreferrer">
+          {restaurantInfo.termsAndConditionsUrl && (
+            <a href={restaurantInfo.termsAndConditionsUrl}>
               {t.termsAndConditions}
             </a>
           )}
-          <a href={complaintsBookUrl} target="_blank" rel="noreferrer">
+          <a
+            href="https://www.livroreclamacoes.pt/Inicio/"
+            target="_blank"
+            rel="noreferrer"
+          >
             {t.complaints}
-          </a>
-        </div>
-
-        <div className="social-links">
-          <a className="social-link" href="https://www.instagram.com/friendship_sushi" target="_blank" rel="noreferrer" aria-label="Instagram">
-            <Instagram size={21} strokeWidth={1.5} />
-          </a>
-          <a className="social-link" href="https://www.facebook.com/profile.php?id=61563631226419&sk=reels_tab" target="_blank" rel="noreferrer" aria-label="Facebook">
-            <Facebook size={21} strokeWidth={1.5} />
           </a>
         </div>
       </div>
       <div className="footer-bottom section-shell">
-        <div className="footer-bottom-copy">
-          <a href="https://www.intelis.pt/" target="_blank" rel="noreferrer">
-            {t.footerDesignedBy}
-          </a>
-          <a href="https://www.intelis.pt/" target="_blank" rel="noreferrer">
-            {t.footerRights}
-          </a>
-        </div>
+        <p>
+          © {new Date().getFullYear()} TOKI Sushi. {t.footerRights}
+        </p>
+        <a href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
+          {t.photoCredit}
+          <ArrowUpRight size={12} />
+        </a>
+        <a href="https://www.intelis.pt/" target="_blank" rel="noreferrer">
+          {t.footerDesignedBy}
+        </a>
       </div>
     </footer>
   );

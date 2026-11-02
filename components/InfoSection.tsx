@@ -1,67 +1,66 @@
 "use client";
-
-import { Clock3, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, Clock3, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { restaurantInfo } from "@/lib/restaurant-info";
 import { useLanguage } from "./LanguageProvider";
-import MagneticButton from "./MagneticButton";
 import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
 
 export default function InfoSection() {
-  const { t } = useLanguage();
-  const details = [
-    { icon: MapPin, label: t.address, value: t.addressText, href: "https://www.google.com/maps/place//data=!4m2!3m1!1s0xd1933003d738f29:0xf03a2fe5f0fe1952?sa=X&ved=1t:8290&ictx=111" },
-    { icon: Clock3, label: t.hours, value: t.hoursText },
-    { icon: Phone, label: t.contact, value: t.contactText, href: "tel:+351927372099" },
-  ];
-
+  const { language, t } = useLanguage();
   return (
     <section className="info-section" id="info">
-      <div className="info-layout">
+      <div className="section-shell">
+        <Reveal className="info-heading">
+          <SectionHeading number="04" title={t.infoTitle} />
+        </Reveal>
+        <div className="info-layout">
         <div className="info-photo">
           <Image
-            src="/images/space-6.webp"
-            alt="Ambiente intimista do Friendship Sushi"
+            src="/images/toki/exterior.webp"
+            alt={language === "pt" ? "A entrada do TOKI Sushi em Leça da Palmeira" : "The entrance to TOKI Sushi in Leça da Palmeira"}
             fill
-            sizes="(max-width: 899px) 100vw, 50vw"
+            sizes="(max-width: 767px) 90vw, 50vw"
           />
-          <div className="info-photo-overlay" />
-          <Reveal className="info-aside">
-            <span>Friendship<br />Sushi</span>
+          <div className="info-photo-caption">
+            <span>TOKI Sushi</span>
             <p>{t.infoAside}</p>
-          </Reveal>
-        </div>
-
-        <div className="info-content">
-          <Reveal>
-            <p className="eyebrow"><span>03</span>{t.infoEyebrow}</p>
-            <h2>{t.infoTitle}</h2>
-          </Reveal>
-
-          <div className="info-list">
-            {details.map(({ icon: Icon, label, value, href }, index) => (
-              <Reveal className="info-row" delay={0.08 * index} key={label}>
-                <Icon size={19} strokeWidth={1.5} aria-hidden="true" />
-                <div>
-                  <p>{label}</p>
-                  {href ? <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined}>{value}</a> : <strong>{value}</strong>}
-                </div>
-              </Reveal>
-            ))}
           </div>
-
-          <Reveal delay={0.18}>
-            <MagneticButton href="/reservation">{t.reserveTable}</MagneticButton>
-          </Reveal>
         </div>
-      </div>
-      <div className="info-map">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12440.341487022342!2d-9.15668625!3d38.784677200000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1933003d738f29%3A0xf03a2fe5f0fe1952!2sFRIENDSHIP%20SUSHI!5e0!3m2!1sen!2spt!4v1786618888027!5m2!1sen!2spt"
-          title="Friendship Sushi no Google Maps"
-          loading="lazy"
-          allowFullScreen
-          referrerPolicy="strict-origin-when-cross-origin"
-        />
+        <Reveal className="info-content">
+          <p className="section-copy info-intro">{t.infoBody}</p>
+          <div className="info-row">
+            <MapPin size={21} strokeWidth={1.4} />
+            <div>
+              <h3>{t.address}</h3>
+              <address><a href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
+                {restaurantInfo.address}, {restaurantInfo.postalAddress}
+              </a></address>
+              <a className="directions-button" href={restaurantInfo.mapsUrl} target="_blank" rel="noreferrer">
+                {t.directions}<ArrowUpRight size={13} />
+              </a>
+            </div>
+          </div>
+          <div className="info-row">
+            <Clock3 size={21} strokeWidth={1.4} />
+            <div>
+              <h3>{language === "pt" ? "Horário" : "Opening hours"}</h3>
+              <p>{t.hours} · {restaurantInfo.hours.lunch} · {restaurantInfo.hours.dinner}</p>
+              <small>{t.holidayNote}</small>
+            </div>
+          </div>
+          <div className="info-row">
+            <Phone size={21} strokeWidth={1.4} />
+            <div>
+              <h3>{t.contact}</h3>
+              <a className="phone-link" href={restaurantInfo.phoneHref}>+351 {restaurantInfo.phone}</a>
+              <p className="takeaway">{t.takeaway}</p>
+            </div>
+          </div>
+          <Link className="button button--dark" href="/reservation">{t.reserveTable}</Link>
+        </Reveal>
+        </div>
       </div>
     </section>
   );

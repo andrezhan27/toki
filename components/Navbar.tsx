@@ -43,12 +43,24 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  const visibleSection = pathname === "/menu" ? "menu-page" : activeSection;
-  const returnHome = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-
   useEffect(() => {
-    document.documentElement.lang = language;
-  }, [language]);
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  const visibleSection =
+    pathname === "/menu" ? "menu-page" : pathname === "/" ? activeSection : "";
+  const returnHome = () =>
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
   const links = [
     ["/", t.navHome, "top"],
@@ -59,20 +71,52 @@ export default function Navbar() {
 
   return (
     <header className={`navbar ${scrolled || open ? "navbar--solid" : ""}`}>
-      <Link className="nav-brand" href="/" onClick={returnHome} aria-label="Friendship Sushi — início">
+      <Link
+        className="nav-brand"
+        href="/"
+        onClick={returnHome}
+        aria-label="TOKI Sushi — início"
+      >
         <span className="nav-logo">
-          <Image src="/images/logo.png" width={58} height={58} alt="" priority />
+          <Image
+            src="/images/toki/logo.webp"
+            width={58}
+            height={58}
+            alt=""
+            loading="eager"
+          />
+        </span>
+        <span className="brand-wordmark">
+          TOKI<small>SUSHI</small>
         </span>
       </Link>
 
-      <nav className="nav-links" aria-label="Navegação principal">
+      <nav
+        className="nav-links"
+        aria-label={
+          language === "pt" ? "Navegação principal" : "Main navigation"
+        }
+      >
         {links.map(([href, label, section]) => (
-          <Link key={href} href={href} onClick={section === "top" ? returnHome : undefined} className={visibleSection === section ? "active" : ""} aria-current={visibleSection === section ? "location" : undefined}>{label}</Link>
+          <Link
+            key={href}
+            href={href}
+            onClick={section === "top" ? returnHome : undefined}
+            className={visibleSection === section ? "active" : ""}
+            aria-current={visibleSection === section ? "location" : undefined}
+          >
+            {label}
+          </Link>
         ))}
       </nav>
 
       <div className="nav-actions">
-        <div className="language-switch" aria-label="Selecionar idioma">
+        <div
+          className="language-switch"
+          aria-label={
+            language === "pt" ? "Selecionar idioma" : "Select language"
+          }
+        >
           <button
             type="button"
             className={language === "pt" ? "active" : ""}
@@ -91,13 +135,24 @@ export default function Navbar() {
             EN
           </button>
         </div>
-        <Link className="nav-reserve" href="/reservation">{t.navReserve}</Link>
+        <Link className="nav-reserve" href="/reservation">
+          {t.navReserve}
+        </Link>
         <button
           className="menu-toggle"
           type="button"
           onClick={() => setOpen((value) => !value)}
-          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-label={
+            language === "pt"
+              ? open
+                ? "Fechar menu"
+                : "Abrir menu"
+              : open
+                ? "Close menu"
+                : "Open menu"
+          }
           aria-expanded={open}
+          aria-controls="mobile-navigation"
         >
           {open ? <X size={23} /> : <Menu size={23} />}
         </button>
@@ -106,22 +161,35 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.nav
+            id="mobile-navigation"
             className="mobile-menu"
-            aria-label="Navegação móvel"
+            aria-label={
+              language === "pt" ? "Navegação móvel" : "Mobile navigation"
+            }
             initial={reduced ? false : { opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25 }}
           >
             {links.map(([href, label, section], index) => (
-              <Link key={href} href={href} className={visibleSection === section ? "active" : ""} onClick={() => {
-                setOpen(false);
-                if (section === "top") returnHome();
-              }}>
-                <span>0{index + 1}</span>{label}
+              <Link
+                key={href}
+                href={href}
+                className={visibleSection === section ? "active" : ""}
+                onClick={() => {
+                  setOpen(false);
+                  if (section === "top") returnHome();
+                }}
+              >
+                <span>0{index + 1}</span>
+                {label}
               </Link>
             ))}
-            <Link className="mobile-reserve" href="/reservation" onClick={() => setOpen(false)}>
+            <Link
+              className="mobile-reserve"
+              href="/reservation"
+              onClick={() => setOpen(false)}
+            >
               {t.reserveTable}
             </Link>
           </motion.nav>

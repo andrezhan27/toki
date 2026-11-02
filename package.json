@@ -1,12 +1,13 @@
 {
-  "name": "friendship-sushi",
+  "name": "toki-sushi",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:seo": "node --test tests/seo-config.test.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

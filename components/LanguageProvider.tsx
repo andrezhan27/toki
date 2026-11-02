@@ -1,123 +1,160 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
-
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 export type Language = "pt" | "en";
-
 const copy = {
   pt: {
     navHome: "Início",
     navSpace: "O Espaço",
     navMenu: "Menu",
     navInfo: "Contactos",
-    navReserve: "Reservar",
-    reserveTable: "Reservar Mesa",
-    scroll: "Descobrir",
+    navReserve: "Reservar mesa",
+    pricing: "Preços",
+    reserveTable: "Reservar mesa",
+    scroll: "Entre no TOKI",
+    heroEyebrow: "Restaurante japonês · Leça da Palmeira",
+    heroLine: "O sabor de",
+    heroAccent: "um bom momento.",
+    heroBody: "Sushi e cozinha japonesa em Leça da Palmeira.",
+    exploreMenu: "Descobrir os sabores",
+    spaceEyebrow: "O nosso espaço",
     spaceTitle: "O Espaço",
-    spaceBody: "Um espaço onde luz, textura e gastronomia se encontram.",
-    spaceNote: "Arquitetura envolvente. Luz quente. Uma experiência à mesa que começa antes do primeiro prato.",
-    menuTitle: "A Nossa Carta",
-    menuBody: "Uma seleção pensada para descobrir, partilhar e repetir.",
-    fullMenu: "Ver Menu Completo",
-    drag: "Arraste",
-    menuPageEyebrow: "Friendship Sushi · Lisboa",
-    menuPageTitle: "Menu Completo",
-    menuPageBody: "Descubra uma seleção de sushi contemporâneo criada para partilhar à mesa.",
+    spaceBody:
+      "Conheça o espaço do TOKI Sushi em Leça da Palmeira. Um ambiente acolhedor, com lanternas japonesas e mesas para almoços, jantares e encontros com amigos.",
+    spaceNote: "O seu próximo encontro tem lugar aqui.",
+    previousPhoto: "Fotografia anterior",
+    nextPhoto: "Fotografia seguinte",
+    menuEyebrow: "À mesa",
+    menuTitle: "Menu",
+    menuAccent: "peça a peça.",
+    menuBody:
+      "Combinados para partilhar, lagostim, sashimi e sushi braseado. Descubra os sabores do TOKI, ao almoço ou ao jantar.",
+    fullMenu: "Ver menu completo",
+    menuNote:
+      "Uma seleção dos pratos do TOKI Sushi. Para consultar a carta completa e os alergénios, fale com a nossa equipa.",
+    menuPageEyebrow: "TOKI Sushi · Leça da Palmeira",
+    menuPageTitle: "Menu",
+    menuPageBody:
+      "Explore o menu do TOKI Sushi em Leça da Palmeira: sashimi, nigiri, gunkan e outras especialidades japonesas. Visite-nos ao almoço ou ao jantar, ou contacte-nos para takeaway.",
     backHome: "Voltar ao início",
-    pricingTitle: "Preços",
-    pricingSubtitle: "À la carte · All you can eat",
-    weekday: "Segunda — Sexta",
-    weekend: "Sábados, Domingos e Feriados",
+    askMenu: "Consultar a carta por telefone",
+    infoEyebrow: "Venha até nós",
+    infoTitle: "Contactos",
+    infoBody: "Visite o TOKI Sushi na Rua Veloso Salgado, em Leça da Palmeira. Estamos abertos todos os dias para almoço e jantar. Reserva já no website!",
+    address: "Onde estamos",
+    hours: "Todos os dias",
     lunch: "Almoço",
     dinner: "Jantar",
-    kids: "Crianças (4–9 anos)",
-    adults: "Adultos",
-    perPerson: "por pessoa",
-    vat: "Preços com IVA incluído.",
-    infoEyebrow: "Visite-nos",
-    infoTitle: "À sua espera.",
-    address: "Morada",
-    addressText: "Av. Columbano Bordalo Pinheiro 91B, 1070-062 Lisboa",
-    hours: "Horário",
-    hoursText: "Todos os dias · 12:00–15:00 · 19:00–23:00",
-    contact: "Contacto",
-    contactText: "927 372 099",
-    infoAside: "Sushi contemporâneo, servido num espaço desenhado para ficar na memória.",
-    footerNav: "Navegação",
-    legal: "Legal",
-    privacy: "Política de Privacidade",
-    termsAndConditions: "Termos e Condições",
+    contact: "Telefone",
+    directions: "Como chegar",
+    infoAside: "Restaurante japonês e sushi em Leça da Palmeira.",
+    takeaway: "No restaurante · Takeaway",
+    holidayNote: "O horário pode variar nos feriados.",
+    footerNav: "Descubra",
+    legal: "Informações",
+    privacy: "Política de privacidade",
+    termsAndConditions: "Termos e condições",
     complaints: "Livro de Reclamações",
     reservations: "Reservas",
-    footerDesignedBy: "Desenvolvido pela Intelis.",
+    footerDesignedBy: "Powered by Intelis",
     footerRights: "Todos os direitos reservados.",
+    photoCredit: "Fotografias do restaurante no Google Maps",
+    reservationEyebrow: "À sua espera",
+    reservationTitle: "Reservas",
+    reservationBody:
+      "Reserve a sua mesa no TOKI Sushi em Leça da Palmeira para almoço ou jantar. Ligue-nos para confirmar a disponibilidade, organizar uma refeição de grupo ou fazer um pedido especial.",
+    callToBook: "Ligar para reservar",
+    callNote: "Reserva sujeita a confirmação pela equipa do restaurante.",
   },
   en: {
     navHome: "Home",
-    navSpace: "The Space",
+    navSpace: "The space",
     navMenu: "Menu",
     navInfo: "Contacts",
-    navReserve: "Reserve",
-    reserveTable: "Reserve a Table",
-    scroll: "Discover",
+    navReserve: "Book a table",
+    pricing: "Prices",
+    reserveTable: "Book a table",
+    scroll: "Step into TOKI",
+    heroEyebrow: "Japanese restaurant · Leça da Palmeira",
+    heroLine: "A taste of",
+    heroAccent: "a good moment.",
+    heroBody: "Sushi and Japanese dining in Leça da Palmeira.",
+    exploreMenu: "Discover the flavours",
+    spaceEyebrow: "Our space",
     spaceTitle: "The Space",
-    spaceBody: "Where light, texture and gastronomy come together.",
-    spaceNote: "Immersive architecture. Warm light. A dining experience that begins before the first dish.",
-    menuTitle: "Our Menu",
-    menuBody: "A selection created to discover, share and enjoy again.",
-    fullMenu: "View Full Menu",
-    drag: "Drag",
-    menuPageEyebrow: "Friendship Sushi · Lisbon",
-    menuPageTitle: "Full Menu",
-    menuPageBody: "Discover a contemporary sushi selection created to share at the table.",
+    spaceBody:
+      "Discover TOKI Sushi in Leça da Palmeira. A welcoming setting with Japanese lanterns and tables for lunch, dinner and meals with friends.",
+    spaceNote: "Your next get-together belongs here.",
+    previousPhoto: "Previous photo",
+    nextPhoto: "Next photo",
+    menuEyebrow: "At the table",
+    menuTitle: "Menu",
+    menuAccent: "piece by piece.",
+    menuBody:
+      "Sharing platters, langoustine, sashimi and seared sushi. Discover the flavours of TOKI over lunch or dinner.",
+    fullMenu: "View the full menu",
+    menuNote:
+      "A selection of dishes at TOKI Sushi. For the full menu and allergen information, please speak to our team.",
+    menuPageEyebrow: "TOKI Sushi · Leça da Palmeira",
+    menuPageTitle: "Menu",
+    menuPageBody:
+      "Explore the menu at TOKI Sushi in Leça da Palmeira: sashimi, nigiri, gunkan and Japanese specialities. Join us for lunch or dinner, or contact us for takeaway.",
     backHome: "Back to home",
-    pricingTitle: "Pricing",
-    pricingSubtitle: "À la carte · All you can eat",
-    weekday: "Monday — Friday",
-    weekend: "Saturdays, Sundays & Holidays",
+    askMenu: "Ask about the menu by phone",
+    infoEyebrow: "Find your way here",
+    infoTitle: "Contacts",
+    infoBody: "Visit TOKI Sushi on Rua Veloso Salgado in Leça da Palmeira. Open daily for lunch and dinner. Book your table on our website!",
+    address: "Find us",
+    hours: "Every day",
     lunch: "Lunch",
     dinner: "Dinner",
-    kids: "Children (4–9 years)",
-    adults: "Adults",
-    perPerson: "per person",
-    vat: "Prices include VAT.",
-    infoEyebrow: "Visit us",
-    infoTitle: "Your table awaits.",
-    address: "Address",
-    addressText: "Av. Columbano Bordalo Pinheiro 91B, 1070-062 Lisbon",
-    hours: "Opening Hours",
-    hoursText: "Every day · 12:00–15:00 · 19:00–23:00",
-    contact: "Contact",
-    contactText: "927 372 099",
-    infoAside: "Contemporary sushi, served in a space designed to stay with you.",
-    footerNav: "Navigation",
-    legal: "Legal",
-    privacy: "Privacy Policy",
-    termsAndConditions: "Terms and Conditions",
-    complaints: "Complaints Book",
+    contact: "Telephone",
+    directions: "Get directions",
+    infoAside: "Japanese restaurant and sushi in Leça da Palmeira.",
+    takeaway: "Dine in · Takeaway",
+    holidayNote: "Opening hours may vary on public holidays.",
+    footerNav: "Explore",
+    legal: "Information",
+    privacy: "Privacy policy",
+    termsAndConditions: "Terms and conditions",
+    complaints: "Complaints book",
     reservations: "Reservations",
-    footerDesignedBy: "Designed by Intelis.",
+    footerDesignedBy: "Powered by Intelis",
     footerRights: "All rights reserved.",
+    photoCredit: "Restaurant photography on Google Maps",
+    reservationEyebrow: "Your table awaits",
+    reservationTitle: "Reservations",
+    reservationBody:
+      "Book a table at TOKI Sushi in Leça da Palmeira for lunch or dinner. Call us to check availability, arrange a group meal or discuss a special request.",
+    callToBook: "Call to book",
+    callNote:
+      "Reservations are subject to confirmation by the restaurant team.",
   },
 } as const;
-
 type LanguageContextValue = {
   language: Language;
   setLanguage: (language: Language) => void;
   t: (typeof copy)[Language];
 };
-
 const LanguageContext = createContext<LanguageContextValue | null>(null);
-
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>("pt");
-  const value = useMemo(() => ({ language, setLanguage, t: copy[language] }), [language]);
-
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+  const value = useMemo(
+    () => ({ language, setLanguage, t: copy[language] }),
+    [language],
+  );
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
 }
-
 export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (!context) throw new Error("useLanguage must be used within LanguageProvider");
+  if (!context)
+    throw new Error("useLanguage must be used within LanguageProvider");
   return context;
 }
