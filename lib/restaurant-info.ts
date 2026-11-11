@@ -6,6 +6,18 @@ export const restaurantInfo = {
   postalCode: "4450-801",
   phone: "913 421 449",
   phoneHref: "tel:+351913421449",
+  deliveryLinks: [
+    {
+      label: "Uber Eats",
+      url: "https://www.ubereats.com/pt/store/toki-sushi/zZ8BXdi3RKq7sT9ZL-A1KQ",
+      icon: "/images/delivery/uber-eats.webp",
+    },
+    {
+      label: "Glovo",
+      url: "https://glovoapp.com/pt/pt/porto/stores/toki-opo",
+      icon: "/images/delivery/glovo.webp",
+    },
+  ],
   mapsUrl: "https://maps.app.goo.gl/fkFShsJcrUiguTAF9",
   reservationWidgetUrl: "https://reserve.intelis.pt/toki",
   mapEmbedUrl:
